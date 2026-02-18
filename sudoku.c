@@ -37,12 +37,16 @@ void toggle_number(int index, int num){
 }
 
 void readGrid(FILE *fp){
-    int i = 0;
+    int i = 0, num;
     char c;
     while(i < 81){
         c = fgetc(fp);
         if(isdigit(c)){
-            grid[i] = c - '0';
+            num = c - '0';
+            grid[i] = num;
+            if (num){
+                toggle_number(i, num);
+            }
             i++;
         }
         else if(c == '.'){
@@ -103,6 +107,12 @@ int main(int argc, char *argv[]){
     if (counter < 17){
         printf("Warning: This Sudoku may have multiple solutions\n");
     }
+
+    if (solve(0)){
+        printf("Solved:\n");
+        printGrid();
+    }
+    else printf("No solution found.\n");
 
     return 0;
 }
